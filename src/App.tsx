@@ -10,8 +10,8 @@ import EmailConfirmedPage from "./pages/Profile/EmailConfirmedPage";
 import ResetPasswordPage from "./pages/Profile/ResetPasswordPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ProfilePage from "./pages/Profile/ProfilePage";
-import EditCalendarCoach from "./pages/Calendar/EditCalendarCoach";
-import EditPersonalCalendarCoach from "./pages/Calendar/EditPersonalCalendarCoach";
+//import EditCalendarCoach from "./pages/Calendar/EditCalendarCoach";
+//import EditPersonalCalendarCoach from "./pages/Calendar/EditPersonalCalendarCoach";
 import ActivityUpload from "./pages/Activity/ActivityUpload";
 import StravaCallback from "./pages/Strava/StravaCallback";
 import ActivityList from "./pages/Activity/ActivityList";
@@ -64,11 +64,12 @@ function App() {
           }
         />
 
+        {/* 
         <Route path="/coach/calendar" element={<EditCalendarCoach />} />
         <Route
           path="/coach/calendar/personal"
           element={<EditPersonalCalendarCoach />}
-        />
+        /> */}
         <Route
           path="/activity/upload"
           element={

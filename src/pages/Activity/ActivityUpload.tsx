@@ -16,6 +16,7 @@ const ActivityUpload = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { parseFitFile, isParsing } = useFitParser();
+  const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
   const [status, setStatus] = useState<
     "idle" | "parsing" | "uploading" | "success" | "error"
@@ -41,20 +42,17 @@ const ActivityUpload = () => {
       };
 
       // 3. Envoyer l'objet JSON vers ton Worker Cloudflare
-      const workerResponse = await fetch(
-        "https://r2-upload-api.francoiscollette07.workers.dev/upload", // N'oublie pas le /upload !
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            fileName: "manual-upload.json", // Le nom de base, le Worker rajoutera un UUID
-            data: r2Data,
-          }),
+      const workerResponse = await fetch(`${WORKER_URL}/upload`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          userId: user.id,
+          fileName: "manual-upload.json", // Le nom de base, le Worker rajoutera un UUID
+          data: r2Data,
+        }),
+      });
 
       if (!workerResponse.ok)
         throw new Error("Échec de l'envoi vers Cloudflare");

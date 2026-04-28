@@ -39,6 +39,7 @@
 
 .topbar-actions {
   display: flex;
+  padding-left: 5px;
   gap: 1.5rem;
 }
 
@@ -169,31 +170,39 @@
 
 /* --- Optimisation Mobile (< 450px) --- */
 @media (max-width: 450px) {
+  .topbar {
+    padding: 0.8rem 0.4rem;
+  }
+  .topbar-logo {
+    font-size: 0.85rem;
+  }
+  .profile-back-btn {
+    flex: 0.25;
+  }
+  .profile-back-btn span {
+    display: none;
+  }
+
   .activities-container {
     padding: 0.5rem; /* On gagne de la place sur les côtés */
   }
-
   .activity-card {
     padding: 0.4rem; /* Réduction des marges internes */
     border-radius: 12px;
   }
-
   .activity-title {
     font-size: 0.85rem; /* Titre légèrement plus petit */
   }
   .activity-date {
     font-size: 0.7rem;
   }
-
   .activity-stats {
     padding: 0.6rem 0.3rem; /* Compression horizontale des stats */
     gap: 2px;
   }
-
   .stat-value {
     font-size: 0.8rem; /* Réduction de la police pour que ça tienne */
   }
-
   .stat-label {
     font-size: 0.55rem; /* Label minuscule pour libérer de la place */
     letter-spacing: 0;

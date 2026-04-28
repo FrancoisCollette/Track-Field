@@ -27,7 +27,7 @@ const ActivityList: React.FC = () => {
   const [activities, setActivities] = useState<ActivityRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [testResult, setTestResult] = useState<string>("");
-  const WORKER_URL = "https://r2-upload-api.francoiscollette07.workers.dev";
+  const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
   useEffect(() => {
     if (user) fetchActivities();
@@ -101,14 +101,13 @@ const ActivityList: React.FC = () => {
           onClick={() => navigate("/dashboard")}
         >
           <ArrowLeft size={20} />
-          Retour
+          <span>Retour</span>
         </button>
         <h1 className="topbar-logo" onClick={() => navigate("/")}>
           TRACK & FIELD
         </h1>
         <div className="topbar-actions">
           <UserCircle
-            size={28}
             className="topbar-icon"
             onClick={() => navigate("/profile")}
           />

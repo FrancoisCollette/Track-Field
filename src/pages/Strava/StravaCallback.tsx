@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { CheckCircle2, Loader2, AlertCircle } from "lucide-react";
-//import "./StravaCallback.css"; // Optionnel pour le style
+import { CheckCircle2, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import "./StravaCallback.css";
 
 // 1. Ajout d'une variable en dehors du composant pour traquer l'exécution
 let isProcessing = false;
@@ -14,6 +14,7 @@ const StravaCallback = () => {
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading",
   );
+  const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
   useEffect(() => {
     const errorParam = searchParams.get("error"); // On récupère l'erreur éventuelle
@@ -37,7 +38,7 @@ const StravaCallback = () => {
     console.log("Tentative de liaison de" + user.id + "avec le code:", code);
     console.log("Scope reçu de Strava:", scope);
 
-    fetch("https://r2-upload-api.francoiscollette07.workers.dev/auth/strava", {
+    fetch(`${WORKER_URL}/auth/strava`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,46 +71,60 @@ const StravaCallback = () => {
   }, [searchParams, user, status]);
 
   return (
-    <div className="callback-container">
-      <div className="callback-card">
-        {status === "loading" && (
-          <>
-            <Loader2 className="spinner" size={48} />
-            <h2>Connexion avec Strava...</h2>
-            <p>Veuillez patienter pendant que nous lions vos comptes.</p>
-          </>
-        )}
+    <div className="strava-page">
+      {/* Bandeau Header */}
+      <header className="strava-header">
+        <button onClick={() => navigate("/")} className="back-button">
+          <ArrowLeft size={20} />
+          <span>Accueil</span>
+        </button>
+        <div className="header-spacer1"></div>
+        <h1 className="header-title">Connexion Strava</h1>
+        <div className="header-spacer2"></div> {/* Équilibre visuel */}
+      </header>
 
-        {status === "success" && (
-          <>
-            <CheckCircle2 size={64} color="#105749" />
-            <h2 style={{ color: "var(--color-eden)" }}>Connexion réussie !</h2>
-            <p>Ton compte Strava est maintenant lié à Track & Field.</p>
-            <button
-              className="primary-btn"
-              onClick={() => navigate("/")}
-              style={{ marginTop: "20px" }}
-            >
-              Retour au Dashboard
-            </button>
-          </>
-        )}
+      <main className="strava-content">
+        <div className="status-card">
+          {status === "loading" && (
+            <div className="status-item">
+              <Loader2 className="spinner-icon" size={60} />
+              <h2>Synchronisation...</h2>
+              <p>Nous finalisons la liaison avec votre compte Strava.</p>
+            </div>
+          )}
 
-        {status === "error" && (
-          <>
-            <AlertCircle size={64} color="#650901" />
-            <h2>Oups !</h2>
-            <p>La liaison a échoué ou l'autorisation a été annulée.</p>
-            <button
-              className="primary-btn"
-              onClick={() => navigate("/profile")}
-              style={{ marginTop: "20px" }}
-            >
-              Réessayer
-            </button>
-          </>
-        )}
-      </div>
+          {status === "success" && (
+            <div className="status-item animate-in">
+              <CheckCircle2 size={70} className="success-icon" />
+              <h2>C'est tout bon !</h2>
+              <p>
+                Tes activités Strava vont maintenant se synchroniser avec Track
+                & Field.
+              </p>
+              <button
+                className="action-btn success"
+                onClick={() => navigate("/")}
+              >
+                Aller au Dashboard
+              </button>
+            </div>
+          )}
+
+          {status === "error" && (
+            <div className="status-item animate-in">
+              <AlertCircle size={70} className="error-icon" />
+              <h2>Une erreur est survenue...</h2>
+              <p>L'autorisation a été refusée ou le lien a expiré.</p>
+              <button
+                className="action-btn error"
+                onClick={() => navigate("/profile")}
+              >
+                Réessayer la liaison
+              </button>
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 };
