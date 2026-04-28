@@ -87,6 +87,7 @@ function App() {
           }
         />
         <Route path="/strava-callback" element={<StravaCallback />} />
+
         {/* 404 — page non trouvée */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
