@@ -134,6 +134,12 @@ const ActivityList: React.FC = () => {
           <strong>Résultat du test Worker :</strong> {testResult}
         </div>
 
+        <div>
+          <button onClick={() => navigate("/activity/upload")}>
+            Télécharger une activité manuellement
+          </button>
+        </div>
+
         <div className="activities-list">
           {activities.map((act) => (
             <div key={act.id} className="activity-card">
