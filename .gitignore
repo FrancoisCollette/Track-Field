@@ -33,3 +33,6 @@ dist-ssr
 
 # Tes notes personnelles avec les clés
 secretKeys.md
+
+# fichiers calendriers cassées
+src/pages/Calendar/
