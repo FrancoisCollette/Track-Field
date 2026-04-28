@@ -1,0 +1,180 @@
+/* Fond global de la page */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #f4f6f5; /* Un gris très léger, proche de ton dashboard */
+  font-family: var(--font-body), "DM Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- BANDEAU SUPERIEUR --- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-eden);
+  padding: 1rem 2rem;
+  color: var(--color-gossip); /* Vert clair pour les icônes */
+}
+
+.topbar-logo {
+  font-family: var(--font-display), "Syne", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0;
+  cursor: pointer;
+  letter-spacing: 1px;
+  color: var(--color-gossip);
+  transition: opacity 0.2s;
+}
+
+.topbar-logo:hover {
+  opacity: 0.8;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.topbar-icon {
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+
+.topbar-icon:hover {
+  transform: scale(1.1);
+  color: white;
+}
+
+/* --- LAYOUT DU CONTENU --- */
+.upload-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Bouton Retour */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--color-eden);
+  font-family: var(--font-body), sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--color-ecstasy); /* Devient orange au survol */
+}
+
+/* --- CARTE D'UPLOAD --- */
+.upload-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.upload-card h2 {
+  font-family: var(--font-display), "Syne", sans-serif;
+  color: var(--color-eden);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+.upload-subtitle {
+  color: #2a2b2d;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+/* --- ZONE DE GLISSER/DEPOSER --- */
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--color-eden);
+  background-color: #f8fafc;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--color-ecstasy);
+  background-color: #fffbf8; /* Léger fond orangé */
+  color: var(--color-ecstasy);
+}
+
+.upload-dropzone.loading {
+  border-color: var(--color-mango);
+  background-color: #fffaf0;
+  cursor: wait;
+}
+
+.upload-dropzone input {
+  display: none; /* Cache l'input natif très moche */
+}
+
+/* --- ETAT DE CHARGEMENT --- */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-mango);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--color-ecstasy);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- MESSAGES DE STATUT --- */
+.status-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-message.success {
+  color: var(--color-eden);
+}
+.status-message.error {
+  color: var(--color-lonestar);
+}

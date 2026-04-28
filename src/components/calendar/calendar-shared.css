@@ -1,0 +1,1150 @@
+/* ============================================================
+   calendar-shared.css
+   Styles partagés pour tous les composants du calendrier.
+   Utilise les variables CSS définies dans :root (LoginPage.css).
+   ============================================================ */
+
+/* ── Variables locales calendrier ── */
+:root {
+  /* Dimensions de la grille */
+  --cal-date-col-width: 72px;       /* largeur colonne dates sticky */
+  --cal-group-col-width: 180px;     /* largeur min d'une colonne groupe */
+  --cal-row-min-height: 80px;       /* hauteur minimale d'une ligne */
+  --cal-header-height: 56px;        /* hauteur du header des groupes */
+
+  /* Couleurs des groupes d'entraînement */
+  --cal-color-sprint:   #f97911;    /* sprint_all */
+  --cal-color-jumps:    #db7c00;    /* jumps_all */
+  --cal-color-m800:     #105749;    /* middle_800 */
+  --cal-color-m1500:    #17685a;    /* middle_1500_3000 */
+  --cal-color-m3000:    #4a7f65;    /* middle_3000_5000 */
+  --cal-color-m400:     #650901;    /* middle_400 */
+  --cal-color-junior:   #6b3fa0;    /* junior */
+  --cal-color-cadet:    #2563a8;    /* cadet_scolaire */
+
+  /* Misc */
+  --cal-border: 1px solid rgba(255,255,255,0.08);
+  --cal-row-bg-even: rgba(255,255,255,0.015);
+  --cal-today-bg: rgba(203,244,152,0.07);
+  --cal-today-border: rgba(203,244,152,0.35);
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER VERT (CalendarHeader)
+   ══════════════════════════════════════════════════════════ */
+
+/* Wrapper principal de la page — pleine hauteur viewport */
+.cal-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0d1117;
+  color: #e8f5e0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  overflow: hidden; /* le scroll est géré par .cal-scroll-container */
+}
+
+/* Header vert fixe en haut */
+.cal-header {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  height: 56px;
+  background: linear-gradient(160deg, #105749, #17685a, #4a7f65);
+  border-bottom: 1px solid rgba(203,244,152,0.15);
+  z-index: 100;
+  position: relative;
+}
+
+.cal-header__back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #cbf498;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.cal-header__back:hover {
+  background: rgba(203,244,152,0.12);
+}
+
+.cal-header__title {
+  /* centré absolument pour ne pas dépendre des colonnes latérales */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cal-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BARRE D'OUTILS (sous le header vert)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #111820;
+  border-bottom: var(--cal-border);
+}
+
+.cal-toolbar__left,
+.cal-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOUTONS GÉNÉRIQUES CALENDRIER
+   ══════════════════════════════════════════════════════════ */
+
+.cal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.cal-btn:active { transform: scale(0.97); }
+
+/* Variante principale (ecstasy) */
+.cal-btn--primary {
+  background: #f97911;
+  color: #fff;
+  border-color: #f97911;
+}
+.cal-btn--primary:hover { background: #e06a0a; }
+
+/* Variante ghost */
+.cal-btn--ghost {
+  background: rgba(255,255,255,0.06);
+  color: #c8dfc8;
+  border-color: rgba(255,255,255,0.1);
+}
+.cal-btn--ghost:hover { background: rgba(255,255,255,0.1); }
+
+/* Variante "retour aujourd'hui" */
+.cal-btn--today {
+  background: rgba(203,244,152,0.12);
+  color: #cbf498;
+  border-color: rgba(203,244,152,0.3);
+  font-weight: 600;
+  animation: cal-today-pulse 2s ease-in-out infinite;
+}
+.cal-btn--today:hover { background: rgba(203,244,152,0.2); }
+
+@keyframes cal-today-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(203,244,152,0.0); }
+  50%       { box-shadow: 0 0 0 4px rgba(203,244,152,0.15); }
+}
+
+/* Bouton icône seul */
+.cal-btn--icon {
+  padding: 7px;
+  border-radius: 8px;
+}
+
+/* Variante "plus de semaines" — large, discret */
+.cal-btn--expand {
+  width: 100%;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  color: #7a9e8a;
+  border-color: rgba(255,255,255,0.06);
+  border-radius: 0;
+  padding: 10px;
+  font-size: 0.8rem;
+}
+.cal-btn--expand:hover {
+  background: rgba(255,255,255,0.08);
+  color: #cbf498;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ZONE DE SCROLL PRINCIPAL
+   C'est ici que se joue le double scroll :
+   - overflow-x: auto → scroll horizontal (groupes)
+   - overflow-y: auto → scroll vertical (semaines)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-scroll-container {
+  flex: 1;           /* prend tout l'espace restant sous les barres fixes */
+  overflow: auto;    /* scroll dans les deux directions */
+  position: relative;
+  /* Scroll fluide sur iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ══════════════════════════════════════════════════════════
+   GRILLE CALENDRIER
+   Structure :
+     .cal-grid
+       .cal-grid__header-row  ← row sticky top
+         .cal-grid__corner    ← coin sticky top+left
+         .cal-grid__col-head  ← head sticky top
+       .cal-grid__body-row    ← ligne normale
+         .cal-date-cell       ← date sticky left
+         .cal-cell            ← cellule groupe
+   ══════════════════════════════════════════════════════════ */
+
+.cal-grid {
+  display: table;      /* table permet sticky sur td/th */
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+/* ── Ligne de header des colonnes ── */
+.cal-grid__header-row {
+  display: table-row;
+}
+
+/* Coin vide (intersection date + header) */
+.cal-grid__corner {
+  display: table-cell;
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 30;         /* au-dessus de tout */
+  width: var(--cal-date-col-width);
+  min-width: var(--cal-date-col-width);
+  background: #111820;
+  border-bottom: var(--cal-border);
+  border-right: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Cellule header groupe */
+.cal-grid__col-head {
+  display: table-cell;
+  position: sticky;
+  top: 0;
+  z-index: 20;         /* en dessous du coin mais au-dessus du body */
+  min-width: var(--cal-group-col-width);
+  height: var(--cal-header-height);
+  padding: 0 12px;
+  background: #111820;
+  border-bottom: var(--cal-border);
+  border-right: var(--cal-border);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.cal-col-head__inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-col-head__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-col-head__label {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c8dfc8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cal-col-head__count {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: #5a7a6a;
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* ── Lignes du body ── */
+.cal-grid__body-row {
+  display: table-row;
+}
+
+.cal-grid__body-row:hover .cal-cell {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Mise en évidence de la ligne aujourd'hui */
+.cal-grid__body-row--today .cal-date-cell,
+.cal-grid__body-row--today .cal-cell {
+  background: var(--cal-today-bg);
+}
+.cal-grid__body-row--today .cal-date-cell {
+  border-left: 3px solid var(--cal-today-border);
+}
+
+/* Lignes paires légèrement différentes */
+.cal-grid__body-row:nth-child(even) .cal-cell {
+  background: var(--cal-row-bg-even);
+}
+.cal-grid__body-row:nth-child(even) .cal-date-cell {
+  background: rgba(255,255,255,0.025);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CELLULE DATE (sticky left)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-date-cell {
+  display: table-cell;
+  position: sticky;
+  left: 0;
+  z-index: 10;         /* au-dessus des cellules normales */
+  width: var(--cal-date-col-width);
+  min-width: var(--cal-date-col-width);
+  max-width: var(--cal-date-col-width);
+  padding: 8px 6px;
+  vertical-align: top;
+  background: #111820;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  border-bottom: var(--cal-border);
+  text-align: center;
+  user-select: none;
+}
+
+.cal-date-cell__day-num {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #e8f5e0;
+}
+
+.cal-date-cell__day-name {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a7a6a;
+  margin-top: 2px;
+}
+
+.cal-date-cell__month {
+  font-size: 0.68rem;
+  color: #4a6a5a;
+  margin-top: 1px;
+}
+
+/* Indicateur "aujourd'hui" dans la cellule date */
+.cal-date-cell--today .cal-date-cell__day-num {
+  color: #cbf498;
+}
+.cal-date-cell--today .cal-date-cell__day-name {
+  color: #8bc870;
+}
+
+/* Dimanche — léger accent */
+.cal-date-cell--sunday .cal-date-cell__day-name {
+  color: #f97911;
+}
+
+/* Jour passé — atténué */
+.cal-date-cell--past .cal-date-cell__day-num {
+  color: #3a5a4a;
+}
+.cal-date-cell--past .cal-date-cell__day-name {
+  color: #2d4a3a;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CELLULE GROUPE (contenu séances)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-cell {
+  display: table-cell;
+  vertical-align: top;
+  min-width: var(--cal-group-col-width);
+  min-height: var(--cal-row-min-height);
+  padding: 6px 8px;
+  border-right: var(--cal-border);
+  border-bottom: var(--cal-border);
+  background: transparent;
+  /* Zone cliquable pour ajouter une séance */
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.cal-cell:hover {
+  background: rgba(255,255,255,0.04) !important;
+}
+
+/* Indicateur "+" au hover dans une cellule vide */
+.cal-cell:hover .cal-cell__add-hint {
+  opacity: 1;
+}
+
+.cal-cell__add-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  padding: 4px 0;
+  color: #3a5a4a;
+  font-size: 0.8rem;
+}
+
+/* Cellule passée — curseur normal, pas d'effet hover fort */
+.cal-cell--past {
+  cursor: default;
+  opacity: 0.65;
+}
+.cal-cell--past:hover {
+  background: transparent !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BLOC SÉANCE (CalendarSession)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-session {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  position: relative;
+  border-left: 3px solid transparent;
+  background: rgba(255,255,255,0.06);
+  transition: background 0.15s, transform 0.1s;
+  min-width: 0;
+}
+
+.cal-session:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateX(1px);
+}
+
+.cal-session__title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #e8f5e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.cal-session__desc {
+  font-size: 0.7rem;
+  color: #7a9e8a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.cal-session__actions {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: none;
+  gap: 2px;
+}
+
+.cal-session:hover .cal-session__actions {
+  display: flex;
+}
+
+.cal-session__action-btn {
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #c8dfc8;
+  border-radius: 4px;
+  padding: 3px;
+  cursor: pointer;
+  line-height: 0;
+  transition: background 0.12s;
+}
+.cal-session__action-btn:hover {
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+}
+
+/* Lecture seule (athlète) */
+.cal-session--readonly {
+  cursor: default;
+}
+.cal-session--readonly:hover {
+  background: rgba(255,255,255,0.06);
+  transform: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BANDEAU "ÉTENDRE" (+ N semaines)
+   Affiché en haut et en bas du calendrier
+   ══════════════════════════════════════════════════════════ */
+
+.cal-expand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.025);
+  border-top: var(--cal-border);
+  border-bottom: var(--cal-border);
+  color: #5a7a6a;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+  /* On colle cette barre à gauche de la grille sticky */
+  position: sticky;
+  left: 0;
+}
+
+.cal-expand-bar:hover {
+  background: rgba(255,255,255,0.05);
+  color: #cbf498;
+}
+
+/* Wrapper wrappant le bar d'expansion — doit s'étirer sur toute la largeur */
+.cal-expand-row {
+  display: table-row;
+}
+.cal-expand-row td {
+  display: table-cell;
+  padding: 0;
+  border-bottom: var(--cal-border);
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOUTON "RETOUR AUJOURD'HUI" (flottant)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-back-today-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(16, 87, 73, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(203,244,152,0.4);
+  border-radius: 50px;
+  color: #cbf498;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transition: background 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.cal-back-today-btn:hover {
+  background: rgba(23, 104, 90, 0.98);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Animation d'apparition/disparition */
+.cal-back-today-btn--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(8px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.cal-back-today-btn--visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOAST / NOTIFICATION
+   ══════════════════════════════════════════════════════════ */
+
+.cal-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  padding: 10px 20px;
+  background: rgba(30, 50, 40, 0.97);
+  border: 1px solid rgba(203,244,152,0.3);
+  border-radius: 8px;
+  color: #cbf498;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  animation: cal-toast-in 0.2s ease;
+}
+
+@keyframes cal-toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODALE CRÉATION / ÉDITION (CalendarModal)
+   ══════════════════════════════════════════════════════════ */
+
+.cal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: cal-overlay-in 0.18s ease;
+}
+
+@keyframes cal-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.cal-modal {
+  width: 100%;
+  max-width: 500px;
+  background: #161e28;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: cal-modal-in 0.2s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+@keyframes cal-modal-in {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.cal-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.cal-modal__context {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cal-modal__context-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-modal__context-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a9e8a;
+}
+
+.cal-modal__date {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e8f5e0;
+}
+
+.cal-modal__close {
+  background: none;
+  border: none;
+  color: #5a7a6a;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  line-height: 0;
+  transition: color 0.12s, background 0.12s;
+}
+.cal-modal__close:hover {
+  color: #e8f5e0;
+  background: rgba(255,255,255,0.08);
+}
+
+.cal-modal__body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Champs formulaire */
+.cal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cal-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #5a7a6a;
+}
+
+.cal-field input,
+.cal-field textarea {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: #e8f5e0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+  resize: vertical;
+}
+
+.cal-field input:focus,
+.cal-field textarea:focus {
+  border-color: rgba(203,244,152,0.4);
+}
+
+.cal-field input::placeholder,
+.cal-field textarea::placeholder {
+  color: #3a5a4a;
+}
+
+/* Section templates */
+.cal-modal__templates {
+  padding: 0 20px 4px;
+}
+
+.cal-modal__templates-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3a5a4a;
+  margin-bottom: 8px;
+}
+
+.cal-modal__templates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cal-template-chip {
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #7a9e8a;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.cal-template-chip:hover {
+  background: rgba(255,255,255,0.1);
+  color: #cbf498;
+}
+
+.cal-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.cal-modal__footer-right {
+  display: flex;
+  gap: 8px;
+}
+
+/* Bouton danger (supprimer) */
+.cal-btn--danger {
+  background: rgba(101,9,1,0.4);
+  color: #ff8a80;
+  border-color: rgba(101,9,1,0.6);
+}
+.cal-btn--danger:hover {
+  background: rgba(101,9,1,0.7);
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOGGLE COPIE AUTOMATIQUE
+   ══════════════════════════════════════════════════════════ */
+
+.cal-copy-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.cal-copy-toggle__label {
+  font-size: 0.8rem;
+  color: #7a9e8a;
+  cursor: pointer;
+}
+
+/* Switch toggle */
+.cal-toggle-switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.cal-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cal-toggle-switch__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cal-toggle-switch input:checked + .cal-toggle-switch__track {
+  background: rgba(203,244,152,0.5);
+}
+
+.cal-toggle-switch__track::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+
+.cal-toggle-switch input:checked + .cal-toggle-switch__track::after {
+  transform: translateX(16px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SÉPARATEUR SEMAINE
+   ══════════════════════════════════════════════════════════ */
+
+.cal-week-separator {
+  display: table-row;
+}
+
+.cal-week-separator td {
+  display: table-cell;
+  padding: 0;
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CALENDRIER PLAN PERSO — COLONNES COACH/ATHLÈTE
+   ══════════════════════════════════════════════════════════ */
+
+/* Sur le plan perso, chaque "colonne jour" est divisée en 2 */
+.cal-personal-header-day {
+  min-width: 320px;
+  padding: 0 !important;
+}
+
+.cal-personal-header-day__inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.cal-personal-header-day__date {
+  text-align: center;
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #c8dfc8;
+  letter-spacing: 0.04em;
+}
+
+.cal-personal-header-day__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.cal-personal-header-day__col {
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a6a5a;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.04);
+}
+.cal-personal-header-day__col:last-child {
+  border-right: none;
+}
+
+/* Cellule du plan perso (demi-colonne) */
+.cal-personal-cell {
+  display: table-cell;
+  vertical-align: top;
+  min-width: 160px;
+  padding: 6px 8px;
+  border-right: var(--cal-border);
+  border-bottom: var(--cal-border);
+  transition: background 0.12s;
+}
+
+.cal-personal-cell--coach {
+  cursor: pointer;
+}
+.cal-personal-cell--coach:hover {
+  background: rgba(16,87,73,0.15) !important;
+}
+
+.cal-personal-cell--athlete {
+  cursor: default;
+  background: rgba(255,255,255,0.015);
+}
+
+/* Placeholder vide athlète */
+.cal-personal-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  color: #2d3d35;
+  font-size: 0.85rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SEARCH BAR ATHLÈTES
+   ══════════════════════════════════════════════════════════ */
+
+.cal-athlete-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 48px;
+  background: #0d1117;
+  border-bottom: var(--cal-border);
+  flex-shrink: 0;
+}
+
+.cal-athlete-search__input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0 12px;
+}
+
+.cal-athlete-search__input-wrap:focus-within {
+  border-color: rgba(203,244,152,0.3);
+}
+
+.cal-athlete-search__input-wrap svg {
+  color: #4a6a5a;
+  flex-shrink: 0;
+}
+
+.cal-athlete-search__input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #e8f5e0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.88rem;
+  padding: 8px 0;
+}
+
+.cal-athlete-search__input::placeholder {
+  color: #3a5a4a;
+}
+
+/* Liste de résultats */
+.cal-athlete-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #161e28;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.cal-athlete-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.cal-athlete-result-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.cal-athlete-result-item__name {
+  font-size: 0.88rem;
+  color: #e8f5e0;
+  font-weight: 500;
+}
+
+.cal-athlete-result-item__cat {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: #5a7a6a;
+}
+
+/* Badges athlètes récents */
+.cal-recent-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 6px 16px;
+  border-bottom: var(--cal-border);
+  flex-shrink: 0;
+  background: #0d1117;
+}
+
+.cal-recent-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  color: #c8dfc8;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.cal-recent-badge:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(203,244,152,0.2);
+}
+.cal-recent-badge--active {
+  background: rgba(16,87,73,0.3);
+  border-color: rgba(203,244,152,0.35);
+  color: #cbf498;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE MOBILE (≤ 640px)
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  :root {
+    --cal-date-col-width: 52px;
+    --cal-group-col-width: 140px;
+    --cal-header-height: 48px;
+  }
+
+  .cal-header__title {
+    font-size: 0.9rem;
+  }
+
+  .cal-header__back span {
+    display: none; /* cache le texte, garde l'icône */
+  }
+
+  .cal-toolbar {
+    padding: 6px 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .cal-col-head__label {
+    font-size: 0.7rem;
+  }
+
+  .cal-date-cell__day-num {
+    font-size: 1.1rem;
+  }
+
+  /* Plan perso mobile : une colonne jour = colonne entière, on empile */
+  .cal-personal-header-day {
+    min-width: 220px;
+  }
+
+  .cal-personal-cell {
+    min-width: 110px;
+  }
+
+  /* Modal full-width sur mobile */
+  .cal-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .cal-modal {
+    border-radius: 16px 16px 0 0;
+    max-width: 100%;
+  }
+}

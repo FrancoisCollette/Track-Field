@@ -1,0 +1,352 @@
+
+/* Import des polices Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* Reset navigateur — AVANT tout le reste */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+/* Toutes les variables de couleurs du projet sont définies ici en :root
+   pour pouvoir les réutiliser dans toutes les autres pages */
+:root {
+
+  /* Palette principale */
+  --color-eden:        #105749;
+  --color-ecstasy:     #f97911;
+  --color-mango:       #db7c00;
+  --color-lonestar:    #650901;
+  --color-gossip:      #cbf498;
+
+  /* Gradient latéral gauche */
+  --gradient-eden: linear-gradient(
+    160deg,
+    #105749 0%,
+    #17685a 30%,
+    #4a7f65 60%,
+    #74a173 80%,
+    #c7e98f 100%
+  );
+
+  /* Typographie */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+
+
+/* ============================================================
+   LAYOUT PRINCIPAL — grille 2 colonnes
+   ============================================================ */
+
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+/* ============================================================
+   COLONNE GAUCHE — branding avec gradient
+   ============================================================ */
+
+.login-left {
+  background: var(--gradient-eden);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cercles décoratifs en pseudo-éléments */
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 50px solid rgba(203, 244, 152, 0.1);
+  pointer-events: none;
+}
+
+.login-left::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 35px solid rgba(249, 121, 17, 0.12);
+  pointer-events: none;
+}
+
+/* Logo */
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--color-ecstasy);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.login-logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--color-gossip);
+  letter-spacing: -0.3px;
+}
+
+/* Accroche */
+.login-tagline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  color: #ffffff;
+  line-height: 1.2;
+  margin: 0 0 14px;
+}
+
+.login-tagline span {
+  color: var(--color-ecstasy);
+}
+
+.login-sub {
+  font-size: 14px;
+  color: rgba(203, 244, 152, 0.8);
+  line-height: 1.65;
+  margin: 0;
+}
+
+
+.login-footer-text {
+  font-size: 11px;
+  color: rgba(203, 244, 152, 0.35);
+  margin: 0;
+}
+
+/* ============================================================
+   COLONNE DROITE — formulaire
+   ============================================================ */
+
+.login-right {
+  background: #ffffff;
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-eden);
+  margin: 0 0 6px;
+}
+
+.login-hint {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 32px;
+}
+
+/* Formulaire */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-field {
+  margin-bottom: 18px;
+}
+
+.login-label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 7px;
+}
+
+/* Wrapper pour positionner l'icône dans l'input */
+.login-input-wrap {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-eden);
+  opacity: 0.45;
+  pointer-events: none; /* l'icône ne bloque pas les clics */
+}
+
+.login-input {
+  width: 100%;
+  box-sizing: border-box; /* padding inclus dans la largeur */
+  padding: 11px 14px 11px 40px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: #fafafa;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.login-input:focus {
+  border-color: var(--color-eden);
+  background: #ffffff;
+}
+
+/* Lien "mot de passe oublié" — styler un bouton comme un lien */
+.login-forgot {
+  align-self: flex-end;
+  font-size: 12.5px;
+  color: var(--color-eden);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: -8px;
+  margin-bottom: 22px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.login-forgot:hover {
+  color: var(--color-mango);
+}
+
+/* Bouton de connexion */
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--color-eden);
+  color: var(--color-gossip);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.login-btn:hover {
+  background: var(--color-mango);
+  color: #fff;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+/* Séparateur */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.login-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #ebebeb;
+}
+
+.login-divider-text {
+  font-size: 11.5px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Lien inscription */
+.login-register {
+  text-align: center;
+  margin: 0;
+}
+
+.login-register-link {
+  font-size: 14px;
+  color: var(--color-ecstasy);
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.login-register-link:hover {
+  color: var(--color-mango);
+}
+
+.login-error {
+  font-size: 13px;
+  color: var(--color-lonestar);
+  background: #fff5f5;
+  border: 1px solid #fcc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+/* ============================================================
+   RESPONSIVE — mobile : une seule colonne
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .login-page {
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+  }
+
+  .login-left {
+    padding: 32px 28px;
+    /* hauteur fixe sur mobile — le gradient ne prend qu'une portion,
+       laisse toute la place au formulaire en dessous */
+    min-height: 220px;
+    height: auto;
+  }
+
+  .login-tagline {
+    font-size: 24px;
+  }
+
+  .login-right {
+    padding: 36px 28px;
+    /* s'étend pour remplir le reste de l'écran */
+    flex: 1;
+  }
+}

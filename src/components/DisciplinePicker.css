@@ -1,0 +1,196 @@
+/* ============================================================
+   DISCIPLINE PICKER
+   ============================================================ */
+
+.disc-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Tags des disciplines sélectionnées */
+.disc-picker-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 36px;
+  align-items: center;
+  padding: 8px 10px;
+  background: #fafafa;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.disc-picker-placeholder {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.disc-picker-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 87, 73, 0.203);;
+  border-color: var(--color-eden);
+  color: var(--color-eden);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.disc-picker-tag-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-eden);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0.75;
+  transition: opacity 0.15s;
+}
+
+.disc-picker-tag-remove:hover { opacity: 1; }
+
+/* Bouton trigger */
+.disc-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-eden);
+  border: 1.5px solid #dde8dd;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-gossip);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  align-self: flex-start;
+  font-family: var(--font-display);
+}
+
+.disc-picker-trigger:hover {
+  background: var(--color-mango);
+  border-color: white;
+  color: white
+}
+
+.disc-picker-trigger--error {
+  border-color: #e53e3e;
+}
+
+/* Dropdown */
+.disc-picker-dropdown {
+  border: 1.5px solid #e8ede8;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Search dans le dropdown */
+.disc-picker-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  background: #fff;
+}
+
+.disc-picker-search-icon { color: #aaa; flex-shrink: 0; }
+
+.disc-picker-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  background: transparent;
+  color: #333;
+  font-family: var(--font-body);
+}
+
+.disc-picker-search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Liste */
+.disc-picker-list {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+/* Groupe */
+.disc-picker-group { padding: 0 0 4px; }
+
+.disc-picker-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #aaa;
+  padding: 6px 12px 4px;
+  margin: 0;
+}
+
+/* Item discipline */
+.disc-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+  font-family: var(--font-body);
+}
+
+.disc-picker-item:hover { background: rgba(16, 87, 73, 0.05); }
+
+.disc-picker-item.active {
+  color: var(--color-eden);
+  font-weight: 600;
+}
+
+/* Checkbox visuelle */
+.disc-picker-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #dde8dd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-eden);
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.disc-picker-item.active .disc-picker-checkbox {
+  background: rgba(16, 87, 73, 0.12);
+  border-color: var(--color-eden);
+}
+
+.disc-picker-empty {
+  font-size: 13px;
+  color: #aaa;
+  padding: 12px;
+  margin: 0;
+}

@@ -1,0 +1,70 @@
+/* ============================================================
+   BIRTH YEAR INPUT
+   ============================================================ */
+
+.birth-year-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.birth-year-input {
+  width: 160px;
+  padding: 10px 14px;
+  background: #fafafa;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: var(--font-body);
+  color: #333;
+  outline: none;
+  transition: border-color 0.15s;
+  /* Masque les flèches natives du input number — peu ergonomiques */
+  -moz-appearance: textfield;
+  appearance: textfield; /* ← propriété standard pour la compatibilité */
+}
+
+.birth-year-input::-webkit-outer-spin-button,
+.birth-year-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.birth-year-input:focus {
+  border-color: var(--color-eden);
+}
+
+.birth-year-input--error {
+  border-color: #e53e3e;
+}
+
+/* Badge catégorie */
+.birth-year-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.birth-year-category-badge {
+  background: rgba(16, 87, 73, 0.12);
+  color: var(--color-eden);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.birth-year-category-label {
+  font-size: 16px;
+  padding : 4px 8px;
+  border-radius: 20px;
+  background-color: var(--color-eden);
+  color: var(--color-gossip);
+  font-weight: 500;
+}
+
+.birth-year-hint {
+  font-size: 13px;
+  color: #f84d4d;
+  margin: 0;
+}

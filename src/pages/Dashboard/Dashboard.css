@@ -1,0 +1,358 @@
+
+.dashboard {
+  min-height: 100vh;
+  background: #f5f7f5;
+  font-family: var(--font-body);
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: var(--color-eden);
+  position: sticky;    /* reste en haut lors du scroll */
+  top: 0;
+  z-index: 100;
+}
+
+.dashboard-logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--color-gossip);
+  letter-spacing: -0.3px;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gossip);
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dashboard-icon-btn:hover {
+  background: rgba(203, 244, 152, 0.15);
+}
+
+.dashboard-icon-btn--logout:hover {
+  background: rgba(249, 121, 17, 0.2);
+  color: var(--color-ecstasy);
+}
+
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+
+/* Badge rouge sur la cloche */
+.dashboard-notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--color-ecstasy);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  pointer-events: none;
+}
+
+/* Overlay transparent — ferme la modale au clic extérieur */
+.dashboard-notif-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+/* Panneau modale */
+.dashboard-notif-panel {
+  position: absolute;
+  top: calc(100% + 14px); /* juste sous le header */
+  right: calc(100% - 130px);
+  width: 300px;
+  background: #fff;
+  border: 1.5px solid #e8ede8;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(16, 87, 73, 0.12);
+  z-index: 200;
+  padding: 16px;
+  /* Empêche la modale de déborder à gauche sur mobile */
+  max-width: calc(100vw - 32px);
+}
+
+.dashboard-notif-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-eden);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+
+.dashboard-notif-empty {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+  padding: 8px 0;
+}
+
+/* Ligne d'une notification */
+.dashboard-notif-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.dashboard-notif-item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0; /* empêche le débordement du texte */
+}
+
+/* Cercle initiales */
+.dashboard-notif-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(16, 87, 73, 0.1);
+  color: var(--color-eden);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dashboard-notif-avatar--accepted {
+  background: rgba(16, 87, 73, 0.15);
+  color: var(--color-eden);
+}
+
+.dashboard-notif-avatar--rejected {
+  background: rgba(101, 9, 1, 0.1);
+  color: var(--color-lonestar);
+}
+
+.dashboard-notif-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-notif-discipline {
+  font-size: 11px;
+  color: #999;
+  margin: 0;
+}
+
+/* Statut athlète */
+.dashboard-notif-status {
+  font-size: 11px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.dashboard-notif-status--accepted { color: var(--color-eden); }
+.dashboard-notif-status--rejected { color: var(--color-lonestar); }
+
+/* Boutons accepter / refuser */
+.dashboard-notif-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dashboard-notif-actions--col {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.dashboard-notif-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.dashboard-notif-btn--accept {
+  background: rgba(16, 87, 73, 0.1);
+  color: var(--color-eden);
+}
+
+.dashboard-notif-btn--accept:hover {
+  background: rgba(16, 87, 73, 0.2);
+}
+
+.dashboard-notif-btn--reject {
+  background: rgba(101, 9, 1, 0.08);
+  color: var(--color-lonestar);
+}
+
+.dashboard-notif-btn--reject:hover {
+  background: rgba(101, 9, 1, 0.16);
+}
+
+/* Liens texte pour l'athlète */
+.dashboard-notif-btn-text {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-eden);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: opacity 0.15s;
+}
+
+.dashboard-notif-btn-text:hover { opacity: 0.7; }
+
+.dashboard-notif-btn-text--muted { color: #999; }
+
+/* ============================================================
+   CONTENU PRINCIPAL
+   ============================================================ */
+
+.dashboard-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* Message de bienvenue */
+.dashboard-welcome {
+  margin-bottom: 48px;
+}
+
+.dashboard-welcome-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-eden);
+  margin: 0 0 8px;
+}
+
+.dashboard-welcome-sub {
+  font-size: 15px;
+  color: #777;
+  margin: 0;
+}
+
+.dashboard-welcome-sub strong {
+  color: var(--color-eden);
+}
+
+/* Cartes */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border: 1.5px solid #e8ede8;
+  border-radius: 14px;
+  padding: 28px 24px;
+  position: relative;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(16, 87, 73, 0.08);
+}
+
+.dashboard-card--soon {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.dashboard-card-icon {
+  color: var(--color-eden);
+  margin-bottom: 14px;
+}
+
+.dashboard-card h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-eden);
+  margin: 0 0 6px;
+}
+
+.dashboard-card p {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dashboard-soon-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(219, 124, 0, 0.12);
+  color: var(--color-mango);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .dashboard-header { padding: 0 16px; }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-welcome-title { font-size: 26px; }
+}

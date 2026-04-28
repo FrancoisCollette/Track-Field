@@ -1,0 +1,457 @@
+/* RegisterPage.css
+   On réutilise les variables définies dans LoginPage.css (:root)
+   Pas besoin de les redéfinir — elles sont globales */
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+
+.register-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  font-family: var(--font-body);
+}
+
+/* ============================================================
+   COLONNE GAUCHE
+   ============================================================ */
+
+.register-left {
+  background: var(--gradient-eden);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-left::before {
+  content: '';
+  position: absolute;
+  top: -70px; right: -70px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  border: 50px solid rgba(203, 244, 152, 0.1);
+  pointer-events: none;
+}
+
+.register-left::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: -50px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 35px solid rgba(249, 121, 17, 0.12);
+  pointer-events: none;
+}
+
+.register-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.register-logo-icon {
+  width: 40px; height: 40px;
+  background: var(--color-ecstasy);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.register-logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--color-gossip);
+  letter-spacing: -0.3px;
+}
+
+.register-tagline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 30px;
+  color: #ffffff;
+  line-height: 1.2;
+  margin: 0 0 14px;
+}
+
+.register-tagline span { color: var(--color-ecstasy); }
+
+.register-sub {
+  font-size: 16px;
+  color: rgba(203, 244, 152, 0.8);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Étapes visuelles */
+.register-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.register-step {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.register-step-num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-ecstasy);
+  min-width: 26px;
+}
+
+.register-step-label {
+  font-size: 20px;
+  color: rgba(203, 244, 152, 0.85);
+}
+
+/* Ligne verticale entre les étapes */
+.register-step-line {
+  width: 1px;
+  height: 20px;
+  background: rgba(203, 244, 152, 0.25);
+  margin-left: 8px;
+}
+
+.register-footer-text {
+  font-size: 11px;
+  color: rgba(203, 244, 152, 0.35);
+  margin: 0;
+}
+
+/* ============================================================
+   COLONNE DROITE
+   ============================================================ */
+
+.register-right {
+  background: #ffffff;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto; /* scroll si le contenu déborde sur petit écran */
+}
+
+.register-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-eden);
+  margin: 0 0 6px;
+}
+
+.register-hint {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 24px;
+}
+
+.register-login-link {
+  color: var(--color-ecstasy);
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--font-body);
+  padding: 0;
+}
+
+.register-login-link:hover { color: var(--color-mango); }
+
+/* Formulaire */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Deux champs côte à côte */
+.register-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.register-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7c7c7c;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.register-input {
+  padding: 10px 13px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: #fafafa;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.register-input:focus {
+  border-color: var(--color-eden);
+  background: #fff;
+}
+
+/* État erreur sur l'input */
+.input-error {
+  border-color: var(--color-lonestar) !important;
+  background: #fff5f5 !important;
+}
+
+/* Message d'erreur sous le champ */
+.register-error {
+  font-size: 11.5px;
+  color: var(--color-lonestar);
+  margin-top: -2px;
+}
+
+.register-error-general {
+  font-size: 13px;
+  color: var(--color-lonestar);
+  background: #fff5f5;
+  border: 1px solid #fcc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   TOGGLE BUTTONS — rôle et discipline
+   ============================================================ */
+
+.register-toggle-group {
+  display: flex;
+  gap: 10px;
+}
+
+.register-toggle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #888;
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.register-toggle:hover {
+  border-color: var(--color-eden);
+  color: var(--color-eden);
+  background: #f0faf7;
+}
+
+/* État sélectionné */
+.register-toggle.active {
+  border-color: var(--color-eden);
+  background: var(--color-eden);
+  color: var(--color-gossip);
+}
+
+/* Erreur sur le toggle */
+.toggle-error {
+  border-color: var(--color-lonestar) !important;
+}
+
+/* Bouton pleine largeur pour les disciplines */
+.register-toggle--wide {
+  flex: 1;
+}
+
+/* ============================================================
+   SÉLECTION DU COACH
+   ============================================================ */
+
+.register-label-optional {
+  font-weight: 400;
+  color: #a4a4a4;
+  text-transform: none;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+/* Barre de recherche */
+.register-coach-search-wrap {
+  position: relative;
+}
+
+.register-coach-search-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+}
+
+.register-coach-search-input {
+  padding-left: 34px !important;
+}
+
+/* Liste scrollable */
+.register-coach-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;      /* hauteur fixe — scroll si beaucoup de coachs */
+  overflow-y: auto;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 6px;
+  background: #fafafa;
+}
+
+/* Item coach */
+.register-coach-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #555;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+  width: 100%;
+}
+
+.register-coach-item:hover {
+  background: #f0faf7;
+  color: var(--color-eden);
+}
+
+.register-coach-item.active {
+  background: rgba(16, 87, 73, 0.08);
+  color: var(--color-eden);
+  font-weight: 500;
+}
+
+/* Cercle initiales */
+.register-coach-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-eden);
+  color: var(--color-gossip);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+/* Checkmark à droite */
+.register-coach-check {
+  margin-left: auto;
+  color: var(--color-eden);
+  font-weight: 700;
+}
+
+.register-coach-loading,
+.register-coach-empty {
+  font-size: 13px;
+  color: #aaa;
+  text-align: center;
+  padding: 12px;
+  margin: 0;
+}
+
+/* ============================================================
+   BOUTON SUBMIT
+   ============================================================ */
+
+.register-btn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  background: var(--color-eden);
+  color: var(--color-gossip);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.register-btn:hover:not(:disabled) {
+  background: var(--color-mango);
+  color: #fff;
+}
+
+.register-btn:active:not(:disabled) { transform: scale(0.98); }
+
+/* État chargement */
+.register-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .register-page {
+    grid-template-columns: 1fr;
+  }
+
+  .register-left {
+    padding: 32px 28px;
+    min-height: 600px;
+    height: auto;
+  }
+  .register-step-line {
+    height : 14px;
+  }
+
+  .register-tagline { font-size: 22px; }
+
+  .register-right {
+    padding: 32px 24px;
+    flex: 1;
+  }
+
+  /* Prénom/Nom en colonne sur mobile */
+  .register-row {
+    grid-template-columns: 1fr;
+  }
+}
