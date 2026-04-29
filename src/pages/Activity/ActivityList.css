@@ -1,6 +1,6 @@
 .page-wrapper {
   min-height: 100vh;
-  background-color: #f4f6f5; /* Un gris très léger, proche de ton dashboard */
+  background-color: #f9fbfb; /* Un gris très léger, très proche du blanc */
   font-family: var(--font-body), "DM Sans", sans-serif;
   margin: 0;
   padding: 0;
@@ -56,6 +56,21 @@
   opacity: 0.8;
 }
 
+.manual-upload-btn-wrapper {
+  display: flex;
+  justify-content: right;
+  padding: 6px 16px;
+  background: #f9fbfb;
+}
+.manual-upload-btn {
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  background: var(--color-eden);
+  color: var(--color-gossip);
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
 /* --- LAYOUT DU CONTENU --- */
 .activities-container {
   max-width: 100%;
@@ -70,7 +85,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 1.5rem;
 }
 
 .activity-card {
@@ -104,10 +118,11 @@
 
 .activity-title {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 22px;
   color: var(--color-eden);
   font-weight: 800;
   margin: 0;
+  cursor: pointer;
 }
 
 .activity-date {
@@ -117,14 +132,36 @@
   align-items: center;
   gap: 0.4rem;
   margin-left: 0.5rem;
+  margin-bottom: 0px !important;
+}
+.activity-chevron {
+  cursor: pointer;
 }
 
 .activity-stats {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  /* Garde ton nombre de colonnes actuel, ex: grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: repeat(4, 1fr);
+
+  /* Aligne les zones elles-mêmes */
+  align-items: center;
+  justify-items: center;
+
+  width: 100%;
   background: #f0f7f5;
   padding: 0.6rem;
   border-radius: 12px;
+}
+/* Cible chaque bloc de stat individuel */
+.activity-stats > div {
+  display: flex;
+  flex-direction: column; /* Pour empiler l'icône/valeur et l'unité */
+  align-items: center; /* Centre horizontalement */
+  justify-content: center; /* Centre verticalement */
+  text-align: center;
+  width: 100%; /* Pour occuper toute sa zone de grille */
+  max-width: 20px;
+  gap: 0px;
 }
 
 .stat-item {
@@ -169,7 +206,7 @@
 }
 
 /* --- Optimisation Mobile (< 450px) --- */
-@media (max-width: 450px) {
+@media (max-width: 500px) {
   .topbar {
     padding: 0.8rem 0.4rem;
   }
@@ -182,7 +219,10 @@
   .profile-back-btn span {
     display: none;
   }
-
+  .topbar-actions {
+    padding-right: 6px;
+    flex: 0.25;
+  }
   .activities-container {
     padding: 0.5rem; /* On gagne de la place sur les côtés */
   }
@@ -198,10 +238,10 @@
   }
   .activity-stats {
     padding: 0.6rem 0.3rem; /* Compression horizontale des stats */
-    gap: 2px;
+    gap: 6px;
   }
   .stat-value {
-    font-size: 0.8rem; /* Réduction de la police pour que ça tienne */
+    font-size: 14px !important; /* Réduction de la police pour que ça tienne */
   }
   .stat-label {
     font-size: 0.55rem; /* Label minuscule pour libérer de la place */

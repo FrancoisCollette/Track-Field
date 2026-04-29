@@ -9,16 +9,22 @@ import {
   ChevronRight,
   UserCircle,
   ArrowLeft,
+  Upload,
 } from "lucide-react";
 import "./ActivityList.css";
-
+import {
+  formatDuration,
+  calculateAndFormatSpeed,
+} from "../../lib/activityUtils";
 interface ActivityRecord {
   id: string;
   title: string;
+  sport: string;
   started_at: string;
   total_distance_m: number;
   moving_time_s: number;
   elevation_gain_m: number;
+  avg_pace_s_per_km: number;
 }
 
 const ActivityList: React.FC = () => {
@@ -26,8 +32,6 @@ const ActivityList: React.FC = () => {
   const navigate = useNavigate();
   const [activities, setActivities] = useState<ActivityRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [testResult, setTestResult] = useState<string>("");
-  const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
   useEffect(() => {
     if (user) fetchActivities();
@@ -52,44 +56,6 @@ const ActivityList: React.FC = () => {
     }
   };
 
-  // TEST DU WORKER : Récupère le JSON complet
-  const testWorkerAccess = async (activityId: string) => {
-    setTestResult("Chargement du JSON via Worker...");
-    try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      const response = await fetch(`${WORKER_URL}/activity/${activityId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || "Erreur Worker");
-      }
-
-      const json = await response.json();
-      console.log("Données R2 reçues:", json);
-      setTestResult(
-        `Succès ! Reçu ${json.laps?.length || 0} tours et ${json.streams?.time?.length || 0} points GPS.`,
-      );
-    } catch (err: any) {
-      setTestResult(`Erreur Worker : ${err.message}`);
-    }
-  };
-
-  const formatPace = (m: number, s: number) => {
-    if (m === 0) return "0:00";
-    const pace = s / 60 / (m / 1000);
-    const mins = Math.floor(pace);
-    const secs = Math.round((pace - mins) * 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}/km`;
-  };
-
   if (loading) return <div className="activities-container">Chargement...</div>;
 
   return (
@@ -104,7 +70,7 @@ const ActivityList: React.FC = () => {
           <span>Retour</span>
         </button>
         <h1 className="topbar-logo" onClick={() => navigate("/")}>
-          TRACK & FIELD
+          Mes ACtivités
         </h1>
         <div className="topbar-actions">
           <UserCircle
@@ -113,51 +79,42 @@ const ActivityList: React.FC = () => {
           />
         </div>
       </header>
+      <div className="manual-upload-btn-wrapper">
+        <button
+          className="manual-upload-btn"
+          onClick={() => navigate("/activity/upload")}
+        >
+          <Upload size={16} style={{ marginRight: "8px" }} />
+          Télécharger une activité manuellement
+        </button>
+      </div>
       <div className="activities-container">
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            color: "var(--color-eden)",
-          }}
-        >
-          Mes Activités
-        </h2>
-
-        <div
-          style={{
-            marginBottom: "20px",
-            padding: "10px",
-            background: "#eee",
-            borderRadius: "8px",
-          }}
-        >
-          <strong>Résultat du test Worker :</strong> {testResult}
-        </div>
-
-        <div>
-          <button onClick={() => navigate("/activity/upload")}>
-            Télécharger une activité manuellement
-          </button>
-        </div>
-
         <div className="activities-list">
           {activities.map((act) => (
-            <div key={act.id} className="activity-card">
+            <div
+              key={act.id}
+              className="activity-card"
+              onClick={() => navigate(`/activity/${act.id}`)} // À remplacer par une page de détail d'activité plus tard
+            >
               <div className="activity-header">
                 <div className="activity-header-wrapper">
                   <h3 className="activity-title">{act.title}</h3>
-                  <div className="activity-date">
-                    <Calendar className="icon-in-stat" />
-
-                    {new Date(act.started_at).toLocaleDateString("fr-FR", {
-                      day: "numeric",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
                 </div>
-                <ChevronRight size={20} color="#ccc" />
+                <div className="activity-date">
+                  <Calendar className="icon-in-stat" />
+
+                  {new Date(act.started_at).toLocaleDateString("fr-FR", {
+                    day: "numeric",
+                    month: "short",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+                <ChevronRight
+                  size={20}
+                  color="#ccc"
+                  className="activity-chevron"
+                />
               </div>
 
               <div className="activity-stats">
@@ -167,43 +124,33 @@ const ActivityList: React.FC = () => {
                   </span>
                 </div>
                 <div className="stat-item">
+                  <span className="stat-value">
+                    {formatDuration(act.moving_time_s)}
+                  </span>
                   <span className="stat-label">
                     <Timer className="icon-in-stat" />
                   </span>
-                  <span className="stat-value">
-                    {Math.floor(act.moving_time_s / 60)}:
-                    {(act.moving_time_s % 60).toString().padStart(2, "0")}
-                  </span>
                 </div>
                 <div className="stat-item">
+                  <span className="stat-value">+{act.elevation_gain_m}m</span>
                   <span className="stat-label">
                     <Mountain className="icon-in-stat" />
                   </span>
-                  <span className="stat-value">+{act.elevation_gain_m}m</span>
                 </div>
+
                 <div className="stat-item">
                   <span
                     className="stat-value"
                     style={{ color: "var(--color-ecstasy)" }}
                   >
-                    {formatPace(act.total_distance_m, act.moving_time_s)}
+                    {calculateAndFormatSpeed(
+                      act.total_distance_m,
+                      act.moving_time_s,
+                      act.sport,
+                    )}
                   </span>
                 </div>
               </div>
-              <button
-                onClick={() => testWorkerAccess(act.id)}
-                style={{
-                  marginTop: "10px",
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  background: "#105749",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                }}
-              >
-                Tester accès JSON (R2)
-              </button>
             </div>
           ))}
 

@@ -15,6 +15,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import ActivityUpload from "./pages/Activity/ActivityUpload";
 import StravaCallback from "./pages/Strava/StravaCallback";
 import ActivityList from "./pages/Activity/ActivityList";
+import ActivityDetail from "./pages/Activity/ActivityDetail";
 
 // ==============================================================
 // Composant ProtectedRoute
@@ -83,6 +84,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ActivityList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/activity/:id"
+          element={
+            <ProtectedRoute>
+              <ActivityDetail />
             </ProtectedRoute>
           }
         />

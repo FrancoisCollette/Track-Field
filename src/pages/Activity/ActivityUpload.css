@@ -67,7 +67,7 @@
   gap: 0.5rem;
   background: none;
   border: none;
-  color: var(--color-eden);
+  color: var(--color-eden) !important;
   font-family: var(--font-body), sans-serif;
   font-size: 1rem;
   font-weight: 600;
@@ -75,9 +75,9 @@
   padding: 0;
   transition: color 0.2s;
 }
-
 .back-btn:hover {
-  color: var(--color-ecstasy); /* Devient orange au survol */
+  background: #cbf49854 !important;
+  scale: 1.05;
 }
 
 /* --- CARTE D'UPLOAD --- */
@@ -177,4 +177,13 @@
 }
 .status-message.error {
   color: var(--color-lonestar);
+}
+
+@media (max-width: 500px) {
+  .upload-container {
+    padding: 1.2rem 0.8rem;
+  }
+  .upload-card {
+    padding: 1rem;
+  }
 }

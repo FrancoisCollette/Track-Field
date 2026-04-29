@@ -11,6 +11,8 @@ interface FitSession {
   avg_cadence?: number;
   total_ascent?: number;
   total_descent?: number;
+  avg_power?: number;
+  max_power?: number;
   sport?: string;
   sub_sport?: string;
 }
@@ -80,6 +82,7 @@ export const useFitParser = () => {
               latlng: [] as (number[] | null)[],
               altitude: [] as (number | null)[],
               heartrate: [] as (number | null)[],
+              watts: [] as (number | null)[],
             };
 
             if (fitData.records && fitData.records.length > 0) {
@@ -126,6 +129,12 @@ export const useFitParser = () => {
                 } else {
                   streams.heartrate.push(null);
                 }
+                // 5. Puissance
+                if (record.power !== undefined) {
+                  streams.watts.push(record.power);
+                } else {
+                  streams.watts.push(null);
+                }
               });
             }
 
@@ -137,11 +146,10 @@ export const useFitParser = () => {
                 distance_m: Math.round(lap.total_distance || 0),
                 total_duration_s: Math.round(lap.total_elapsed_time || 0),
                 moving_time_s: Math.round(lap.total_timer_time || 0),
-                avg_speed_kmh: lap.avg_speed
-                  ? parseFloat((lap.avg_speed * 3.6).toFixed(2))
-                  : null,
                 avg_heart_rate: lap.avg_heart_rate || null,
                 max_heart_rate: lap.max_heart_rate || null,
+                avg_power: lap.avg_power ? Math.round(lap.avg_power) : null,
+                max_power: lap.max_power ? Math.round(lap.max_power) : null,
                 elevation_gain_m: Math.round(lap.total_ascent || 0),
                 elevation_loss_m: Math.round(lap.total_descent || 0),
               }),
@@ -166,10 +174,15 @@ export const useFitParser = () => {
                 : null,
               elevation_gain_m: Math.round(session.total_ascent || 0),
               elevation_loss_m: Math.round(session.total_descent || 0),
-              laps: formattedLaps,
+              avg_power: session.avg_power
+                ? Math.round(session.avg_power)
+                : null,
+              max_power: session.max_power
+                ? Math.round(session.max_power)
+                : null,
 
-              // On passe nos beaux tableaux à la place des records bruts !
-              streams: streams,
+              laps: formattedLaps,
+              streams: streams, // On passe nos beaux tableaux à la place des records bruts !
             };
 
             setIsParsing(false);

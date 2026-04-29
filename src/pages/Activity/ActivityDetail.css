@@ -1,0 +1,299 @@
+.activity-detail-page {
+  min-height: 100vh;
+  background-color: #f1f5f9;
+  padding-bottom: 40px;
+}
+
+.detail-header {
+  background-color: var(--color-eden);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-gossip);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.detail-content {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.back-btn {
+  flex: 0.5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-gossip) !important;
+  background: transparent;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 3px 6px;
+}
+.back-btn:hover {
+  background: rgba(203, 244, 152, 0.15);
+}
+
+.header-spacer1 {
+  flex: 0.5;
+}
+.header-spacer2 {
+  flex: 1;
+}
+
+/* Hero Card */
+.hero-card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  border: 2px solid var(--color-mango);
+}
+
+.activity-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #64748b;
+  text-transform: capitalize;
+  margin-bottom: 8px;
+}
+
+.hero-info h2 {
+  font-size: 1.8rem;
+  color: var(--color-eden);
+  margin-bottom: 10px;
+}
+
+/* Grid de stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.stat-icon {
+  color: var(--color-eden);
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Map */
+.map-section {
+  width: 100%;
+  height: 400px;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  position: relative; /* Pour que les contrôles Mapbox se placent bien */
+}
+/* On s'assure que le canvas Mapbox prend toute la place */
+.mapboxgl-canvas {
+  border-radius: 24px;
+}
+
+/* Graphiques */
+.chart-section {
+  background: white;
+  margin: 20px 0;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chart-toggles {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f8f9fa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background: #105749;
+  color: white;
+  border-color: #105749;
+}
+
+.custom-tooltip {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-dist {
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+/* Section Secondaire */
+.secondary-section {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.secondary-section h3 {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.mini-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.heart-icon {
+  color: #ef4444;
+}
+.heart-icon-max {
+  color: #991b1b;
+}
+.cadence-icon {
+  color: #f59e0b;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  /* rétrécit les espaces sous chaque div */
+  .hero-card,
+  .stats-grid,
+  .map-section,
+  .chart-section,
+  .secondary-section {
+    margin-bottom: 10px;
+    margin-top: 0px;
+  }
+
+  /* diminue padding sur titre et infos principales */
+  .hero-card,
+  .stat-card {
+    padding: 10px;
+  }
+  .header-title {
+    font-size: 20px;
+  }
+  .back-btn span {
+    display: none;
+  }
+  .detail-content {
+    padding: 0 10px;
+  }
+  .map-section {
+    height: 300px;
+  }
+  .chart-section {
+    padding: 10px;
+  }
+  .secondary-section {
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .secondary-section h3 {
+    padding-bottom: 6px;
+  }
+}
+@media (max-width: 320px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .secondary-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-info h2 {
+    font-size: 1.4rem;
+  }
+  .stat-card {
+    /* ajouter qqch pour mettre tout sur la même ligne ? */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  .stat-card .stat-value {
+    position: absolute;
+    right: 20px;
+  }
+  .stat-card .stat-label {
+    position: absolute;
+    left: 50px;
+    margin: 0;
+  }
+  .stat-card .stat-icon {
+    height: 15px;
+    width: 15px;
+    margin: 0px;
+  }
+}
+
+@media (max-width: 250px) {
+  .stat-card {
+    padding: 14px;
+  }
+  .stat-card .stat-icon {
+    display: none;
+  }
+  .stat-card .stat-label {
+    position: absolute;
+    left: 20px;
+    margin: 0;
+  }
+}

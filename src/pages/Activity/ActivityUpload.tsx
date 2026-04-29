@@ -89,27 +89,7 @@ const ActivityUpload = () => {
         return `${sportName} ${timeOfDay}`;
       };
 
-      // --- Logique de calcul des performances (Identique au webhook) ---
-      let avgPace = null;
-      let avgSpeedKmh = null;
-      const distanceKm = activityData.total_distance_m / 1000;
-      const timeHours = activityData.moving_time_s / 3600;
       const sport = activityData.sport;
-
-      if (distanceKm > 0.1 && timeHours > 0) {
-        // Vitesse moyenne en km/h pour tout le monde (stockée en base)
-        avgSpeedKmh = parseFloat((distanceKm / timeHours).toFixed(2));
-
-        // Calcul de l'allure spécifique (Pace) selon le sport
-        const average_speed_ms =
-          activityData.total_distance_m / activityData.moving_time_s;
-
-        if (["running", "trail", "track_athletics"].includes(sport)) {
-          avgPace = Math.round(1000 / average_speed_ms);
-        } else if (["swimming", "open_water_swimming"].includes(sport)) {
-          avgPace = Math.round(100 / average_speed_ms);
-        }
-      }
 
       // 4. Enregistrer les métadonnées dans Supabase
       const { error: dbError } = await supabase.from("activities").insert({
@@ -117,7 +97,6 @@ const ActivityUpload = () => {
         title: generateSmartTitle(new Date(activityData.started_at), sport),
         sport: sport, // Assure-toi que le parser renvoie une valeur de ton ENUM
         started_at: activityData.started_at,
-        source: "fit_upload",
 
         // Stats de performance
         total_distance_m: Math.round(activityData.total_distance_m || 0),
@@ -137,12 +116,8 @@ const ActivityUpload = () => {
           ? Math.round(Math.abs(activityData.elevation_loss_m))
           : 0,
 
-        avg_pace_s_per_km: avgPace,
-        avg_speed_kmh: avgSpeedKmh,
-
         // Référence stockage R2
         raw_file_url: key,
-        raw_file_name: fileName,
       });
 
       if (dbError) throw dbError;
@@ -163,7 +138,7 @@ const ActivityUpload = () => {
       {/* --- BANDEAU VERT --- */}
       <header className="topbar">
         <h1 className="topbar-logo" onClick={() => navigate("/")}>
-          TRACK & FIELD
+          Ajout manuel d'activité
         </h1>
         <div className="topbar-actions">
           <UserCircle
@@ -178,9 +153,12 @@ const ActivityUpload = () => {
       <main className="upload-container">
         {/* Bouton de retour */}
         <div className="upload-header-actions">
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button
+            className="back-btn"
+            onClick={() => navigate("/activity/list")}
+          >
             <ArrowLeft size={20} />
-            Retour au tableau de bord
+            Retour à la liste d'activités
           </button>
         </div>
 
