@@ -85,7 +85,7 @@ const ActivityList: React.FC = () => {
           onClick={() => navigate("/activity/upload")}
         >
           <Upload size={16} style={{ marginRight: "8px" }} />
-          Télécharger une activité manuellement
+          Ajouter une activité
         </button>
       </div>
       <div className="activities-container">

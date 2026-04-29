@@ -16,7 +16,18 @@
   position: sticky;
   top: 0;
 }
-
+.profile-back-btn {
+  background-color: var(--color-eden);
+  margin: 0px;
+  border: none;
+  border-radius: 16px;
+  padding: 6px 12px;
+  color: var(--color-gossip);
+  gap: 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 .profile-back-btn:hover {
   background: rgba(203, 244, 152, 0.15);
 }
@@ -63,6 +74,8 @@
   background: #f9fbfb;
 }
 .manual-upload-btn {
+  display: flex;
+  align-items: center;
   padding: 6px 12px;
   font-family: var(--font-body);
   background: var(--color-eden);
@@ -123,6 +136,7 @@
   font-weight: 800;
   margin: 0;
   cursor: pointer;
+  padding-left: 4px;
 }
 
 .activity-date {
@@ -205,10 +219,9 @@
   cursor: pointer;
 }
 
-/* --- Optimisation Mobile (< 450px) --- */
 @media (max-width: 500px) {
   .topbar {
-    padding: 0.8rem 0.4rem;
+    padding: 8px 12px !important;
   }
   .topbar-logo {
     font-size: 0.85rem;

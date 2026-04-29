@@ -61,13 +61,18 @@
 }
 
 /* Bouton Retour */
-.back-btn {
+.upload-header-actions {
+  background: none;
+  padding: none;
+  color: var(--color-eden);
+}
+.upload-back-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   background: none;
   border: none;
-  color: var(--color-eden) !important;
+  color: var(--color-eden);
   font-family: var(--font-body), sans-serif;
   font-size: 1rem;
   font-weight: 600;
@@ -75,8 +80,8 @@
   padding: 0;
   transition: color 0.2s;
 }
-.back-btn:hover {
-  background: #cbf49854 !important;
+.upload-back-btn:hover {
+  background: #bff59629;
   scale: 1.05;
 }
 

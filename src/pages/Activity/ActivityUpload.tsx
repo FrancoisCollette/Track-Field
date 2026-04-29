@@ -154,7 +154,7 @@ const ActivityUpload = () => {
         {/* Bouton de retour */}
         <div className="upload-header-actions">
           <button
-            className="back-btn"
+            className="upload-back-btn"
             onClick={() => navigate("/activity/list")}
           >
             <ArrowLeft size={20} />
