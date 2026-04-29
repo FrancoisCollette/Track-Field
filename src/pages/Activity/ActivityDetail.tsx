@@ -46,7 +46,6 @@ const ActivityDetail = () => {
   const [activity, setActivity] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const [canRenderChart, setCanRenderChart] = useState(false);
   const [chartData, setChartData] = useState<any[]>([]);
   const [activeCurves, setActiveCurves] = useState({
     speed: false,
