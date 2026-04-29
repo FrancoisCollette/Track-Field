@@ -124,10 +124,16 @@
 /* Graphiques */
 .chart-section {
   background: white;
+  height: auto; /* <--- CHANGE ICI : auto au lieu de 300px */
+  min-height: 200px;
+  width: 100%;
   margin: 20px 0;
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .chart-toggles {
@@ -241,6 +247,10 @@
   }
   .chart-section {
     padding: 10px;
+  }
+  .chart-toggles {
+    gap: 6px;
+    margin-bottom: 0px;
   }
   .secondary-section {
     padding: 10px;

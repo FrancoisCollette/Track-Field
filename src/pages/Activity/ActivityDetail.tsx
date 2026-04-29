@@ -46,6 +46,7 @@ const ActivityDetail = () => {
   const [activity, setActivity] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const [canRenderChart, setCanRenderChart] = useState(false);
   const [chartData, setChartData] = useState<any[]>([]);
   const [activeCurves, setActiveCurves] = useState({
     speed: false,
@@ -61,22 +62,47 @@ const ActivityDetail = () => {
   }, [activity]);
 
   useEffect(() => {
-    // On ne charge l'activité et la carte que si l'ID change
-    // et que la carte n'existe pas encore.
-    if (!map.current) {
-      fetchActivityAndTrack();
+    if (id) {
+      fetchActivityData();
     }
+  }, [id]);
 
-    // Nettoyage de la carte quand on quitte la page
+  // 2. useEffect pour initialiser la carte quand TOUT est prêt
+  useEffect(() => {
+    // On ne lance la carte QUE si :
+    // - On n'est plus en train de charger
+    // - On a les données d'activité
+    // - Le container de la carte est présent dans le DOM
+    // - La carte n'est pas déjà initialisée
+    if (
+      !loading &&
+      activity &&
+      chartData.length > 0 &&
+      mapContainer.current &&
+      !map.current
+    ) {
+      // On récupère les coordonnées depuis le chartData ou on les repasse
+      // attention inversion [lat, long] vers [long, lat] pour Mapbox
+      const coords = chartData
+        .filter((d) => d.latlng && d.latlng.length === 2)
+        .map((d) => [d.latlng[1], d.latlng[0]]);
+      if (coords.length > 0) {
+        initMap(coords);
+      }
+    }
+  }, [loading, activity, chartData]); // S'exécute quand l'un de ces trois change
+
+  // 3. useEffect pour le nettoyage (uniquement)
+  useEffect(() => {
     return () => {
       if (map.current) {
         map.current.remove();
-        map.current = null; // Très important de remettre à null
+        map.current = null;
       }
     };
-  }, [id]);
+  }, []);
 
-  const fetchActivityAndTrack = async () => {
+  const fetchActivityData = async () => {
     try {
       setLoading(true);
 
@@ -94,16 +120,19 @@ const ActivityDetail = () => {
         data: { session },
       } = await supabase.auth.getSession();
       if (session && id) {
-        const { chartData: newChartData, coordinates } =
-          await fetchActivityStreams(id, session.access_token, WORKER_URL);
+        const { chartData: newChartData } = await fetchActivityStreams(
+          id,
+          session.access_token,
+          WORKER_URL,
+        );
 
         setChartData(newChartData);
 
-        if (coordinates.length > 0) {
-          initMap(coordinates);
-        } else {
-          console.error("Aucune coordonnée valide trouvée pour la carte.");
-        }
+        // if (coordinates.length > 0) {
+        //   initMap(coordinates);
+        // } else {
+        //   console.error("Aucune coordonnée valide trouvée pour la carte.");
+        // }
       }
     } catch (err) {
       console.error(err);
@@ -124,6 +153,7 @@ const ActivityDetail = () => {
       style: "mapbox://styles/mapbox/outdoors-v12",
       center: coords[0] as [number, number], // On commence au premier point
       zoom: 12,
+      trackResize: true, // Aide Mapbox à se redimensionner sur Vercel
     });
 
     // Ajout des contrôles
@@ -268,8 +298,8 @@ const ActivityDetail = () => {
             className="chart-container"
             style={{ width: "100%", height: 300, minHeight: "200px" }}
           >
-            {chartData.length > 0 && (
-              <ResponsiveContainer width="100%" height="100%">
+            {chartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <AreaChart
                   data={chartData}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
@@ -368,6 +398,17 @@ const ActivityDetail = () => {
                   )}
                 </AreaChart>
               </ResponsiveContainer>
+            ) : (
+              <div
+                style={{
+                  height: 300,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Chargement des graphiques...
+              </div>
             )}
           </div>
           <div className="chart-toggles">
