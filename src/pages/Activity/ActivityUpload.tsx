@@ -58,7 +58,7 @@ const ActivityUpload = () => {
         throw new Error("Échec de l'envoi vers Cloudflare");
 
       // On récupère la clé exacte où le fichier a été rangé sur R2
-      const { key, fileName } = await workerResponse.json();
+      const { key } = await workerResponse.json();
 
       // --- Logique de génération de titre intelligent ---
       const generateSmartTitle = (date: Date, sport: string): string => {
