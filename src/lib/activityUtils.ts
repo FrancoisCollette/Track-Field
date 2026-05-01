@@ -15,6 +15,17 @@ export const SPORT_UNITS = {
     "kayaking",
   ],
 };
+const FAST_SPORTS = [
+  "cycling",
+  "mountain_biking",
+  "gravel",
+  "ebike",
+  "vélo",
+  "ski_alpine",
+  "ski_nordic",
+  "snowboard",
+  "sailing",
+];
 
 export type SpeedMode = "PACE" | "SWIM" | "SPEED";
 
@@ -114,6 +125,7 @@ const calculateDistanceBetweenPoints = (
  */
 export const fetchActivityStreams = async (
   activityId: string,
+  sport: string,
   token: string,
   workerUrl: string,
 ) => {
@@ -135,15 +147,18 @@ export const fetchActivityStreams = async (
   let cumulativeDistanceMeters = 0;
   // --- PARAMÈTRES DE CORRECTION GPS ---
   const SMOOTHING_WINDOW = 3; // Nombre de points pour la moyenne mobile
-  const MAX_ACCELERATION = 20; // m/s² (Variation de vitesse max autorisée par seconde)
-  let recentSpeeds: number[] = []; // Mémoire pour calculer la moyenne mobile
 
+  const currentSport = sport?.toLowerCase() || ""; // On définit la limite selon le sport
+  const isFastSport = FAST_SPORTS.some((s) => currentSport.includes(s)); // On vérifie si le sport actuel est présent dans notre liste "FAST_SPORTS"
+  const MAX_ACCELERATION = isFastSport ? 15 : 5; // m/s² (Variation de vitesse max autorisée par seconde)
+
+  let recentSpeeds: number[] = []; // Mémoire pour calculer la moyenne mobile
+  let lastValidSpeed = 0; // On garde en mémoire la dernière vitesse "physiquement possible"
   if (streams.time) {
     // 1. Formatage pour Recharts
     chartData = streams.time.map((t: number, i: number) => {
       const latlng = streams.latlng ? streams.latlng[i] : null;
       let instantSpeedMps = 0;
-      let lastValidSpeed = 0; // On garde en mémoire la dernière vitesse "physiquement possible"
 
       // --- CALCUL DE LA DISTANCE SI COORDONNÉES PRÉSENTES ---
       if (i > 0 && latlng && streams.latlng[i - 1]) {
@@ -153,8 +168,6 @@ export const fetchActivityStreams = async (
           latlng[0],
           latlng[1],
         );
-        cumulativeDistanceMeters += d;
-
         // Calcul de la vitesse brute : distance entre 2 points / différence de temps (1s)
         const timeDiff = t - streams.time[i - 1];
         let rawSpeed = timeDiff > 0 ? d / timeDiff : 0;
@@ -170,6 +183,7 @@ export const fetchActivityStreams = async (
           instantSpeedMps = lastValidSpeed;
         } else {
           // Le point est valide
+          cumulativeDistanceMeters += d;
           lastValidSpeed = rawSpeed;
           instantSpeedMps = rawSpeed;
         }

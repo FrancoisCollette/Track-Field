@@ -180,7 +180,7 @@ export default function RegisterPage() {
       password: form.password,
       options: {
         // cette ligne indique la page de destination après confirmation
-        emailRedirectTo: "http://localhost:5173/email-confirmed",
+        emailRedirectTo: "https://track-field-pi.vercel.app/email-confirmed",
         data: {
           first_name: form.firstName,
           last_name: form.lastName,

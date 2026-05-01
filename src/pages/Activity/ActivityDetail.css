@@ -268,6 +268,10 @@
   }
 
   /* diminue padding sur titre et infos principales */
+  .detail-content {
+    max-width: 90%;
+    padding: 0px;
+  }
   .detail-header {
     padding: 6px 10px;
   }
@@ -280,9 +284,6 @@
   }
   .back-btn span {
     display: none;
-  }
-  .detail-content {
-    padding: 0 10px;
   }
   .map-section {
     height: 300px;

@@ -133,6 +133,7 @@ const ActivityDetail = () => {
         try {
           const { chartData: newChartData } = await fetchActivityStreams(
             id,
+            activity?.sport || "",
             session.access_token,
             WORKER_URL,
           );
