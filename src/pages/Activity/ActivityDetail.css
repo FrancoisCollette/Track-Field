@@ -17,7 +17,7 @@
 }
 
 .detail-content {
-  max-width: 800px;
+  max-width: 80%;
   margin: 20px auto;
   padding: 0 15px;
 }
@@ -106,6 +106,26 @@
 }
 
 /* Map */
+.map-error-placeholder {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 30%;
+  align-items: center;
+  justify-content: center;
+}
+.error-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.error-content p {
+  color: #6e3a3a;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 300px;
+}
 .map-section {
   width: 100%;
   height: 400px;
@@ -116,12 +136,31 @@
   border: 1px solid #e2e8f0;
   position: relative; /* Pour que les contrôles Mapbox se placent bien */
 }
+.map-container {
+  height: 100%;
+  width: 100%;
+}
 /* On s'assure que le canvas Mapbox prend toute la place */
 .mapboxgl-canvas {
   border-radius: 24px;
 }
 
 /* Graphiques */
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  top: 30%;
+  align-items: center;
+  justify-content: center;
+}
+.no-data-message span {
+  color: #6e3a3a;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 300px;
+}
 .chart-section {
   background: white;
   height: auto; /* <--- CHANGE ICI : auto au lieu de 300px */
@@ -217,7 +256,7 @@
 }
 
 /* Mobile */
-@media (max-width: 500px) {
+@media (max-width: 500px), (max-height: 600px) {
   /* rétrécit les espaces sous chaque div */
   .hero-card,
   .stats-grid,
@@ -229,6 +268,9 @@
   }
 
   /* diminue padding sur titre et infos principales */
+  .detail-header {
+    padding: 6px 10px;
+  }
   .hero-card,
   .stat-card {
     padding: 10px;

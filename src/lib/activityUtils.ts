@@ -86,6 +86,29 @@ export const calculateAndFormatSpeed = (
 };
 
 /**
+ * Calcule la distance en mètres entre deux coordonnées GPS
+ */
+const calculateDistanceBetweenPoints = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): number => {
+  const R = 6371e3; // Rayon de la Terre en mètres
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c; // Distance en mètres
+};
+
+/**
  * Récupère les streams depuis le Worker (R2), et les formate
  * pour le graphique (Recharts) et la carte (Mapbox).
  */
@@ -109,23 +132,62 @@ export const fetchActivityStreams = async (
 
   let chartData: any[] = [];
   let coordinates: number[][] = [];
+  let cumulativeDistanceMeters = 0;
+  // --- PARAMÈTRES DE CORRECTION GPS ---
+  const SMOOTHING_WINDOW = 3; // Nombre de points pour la moyenne mobile
+  const MAX_ACCELERATION = 20; // m/s² (Variation de vitesse max autorisée par seconde)
+  let recentSpeeds: number[] = []; // Mémoire pour calculer la moyenne mobile
 
   if (streams.time) {
     // 1. Formatage pour Recharts
     chartData = streams.time.map((t: number, i: number) => {
       const latlng = streams.latlng ? streams.latlng[i] : null;
-      const distance = streams.distance ? streams.distance[i] : 0;
-      const speed = streams.velocity_smooth
-        ? streams.velocity_smooth[i] * 3.6
-        : 0; // Stocké en km/h pour le graphe
+      let instantSpeedMps = 0;
+      let lastValidSpeed = 0; // On garde en mémoire la dernière vitesse "physiquement possible"
+
+      // --- CALCUL DE LA DISTANCE SI COORDONNÉES PRÉSENTES ---
+      if (i > 0 && latlng && streams.latlng[i - 1]) {
+        const d = calculateDistanceBetweenPoints(
+          streams.latlng[i - 1][0],
+          streams.latlng[i - 1][1],
+          latlng[0],
+          latlng[1],
+        );
+        cumulativeDistanceMeters += d;
+
+        // Calcul de la vitesse brute : distance entre 2 points / différence de temps (1s)
+        const timeDiff = t - streams.time[i - 1];
+        let rawSpeed = timeDiff > 0 ? d / timeDiff : 0;
+        // CALCUL DE L'ACCÉLÉRATION (Variation de vitesse / Temps)
+        const acceleration =
+          Math.abs(rawSpeed - lastValidSpeed) / (timeDiff || 1);
+
+        // DÉTECTION DU SAUT GPS :
+        // Si l'accélération est inhumaine, on rejette le point
+        if (acceleration > MAX_ACCELERATION && i > 1) {
+          // On ignore cette distance aberrante
+          // La vitesse pour ce point devient la dernière vitesse valide
+          instantSpeedMps = lastValidSpeed;
+        } else {
+          // Le point est valide
+          lastValidSpeed = rawSpeed;
+          instantSpeedMps = rawSpeed;
+        }
+
+        // APPLICATION DU LISSAGE (Moyenne mobile sur les points validés)
+        recentSpeeds.push(instantSpeedMps);
+        if (recentSpeeds.length > SMOOTHING_WINDOW) recentSpeeds.shift();
+        instantSpeedMps =
+          recentSpeeds.reduce((a, b) => a + b, 0) / recentSpeeds.length;
+      }
       const alt = streams.altitude ? streams.altitude[i] : null;
       const hr = streams.heartrate ? streams.heartrate[i] : null;
       const pwr = streams.watts ? streams.watts[i] : null;
 
       return {
         time: t,
-        distance: (distance / 1000).toFixed(2),
-        speed: speed,
+        distance: cumulativeDistanceMeters / 1000, // en km
+        speed: instantSpeedMps,
         altitude: alt,
         heartRate: hr,
         power: pwr,

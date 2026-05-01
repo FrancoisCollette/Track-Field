@@ -75,6 +75,8 @@ export const useFitParser = () => {
           } else {
             const fitData = data as FitData;
             const session = fitData.sessions?.[0] || {};
+            console.log("Session complète:", session);
+            // pour débug : affiche l'entièreté des données globale du fichier fit
 
             // --- CRÉATION DES STREAMS (Format Strava) ---
             const streams = {
@@ -154,6 +156,18 @@ export const useFitParser = () => {
                 elevation_loss_m: Math.round(lap.total_descent || 0),
               }),
             );
+            let maxPower = session.max_power || null;
+
+            // Si le max est absent de la session mais qu'on a des points de puissance
+            if (!maxPower && streams.watts && streams.watts.length > 0) {
+              // On filtre les null et on cherche le chiffre le plus haut
+              const powerPoints = streams.watts.filter(
+                (p): p is number => p !== null,
+              );
+              if (powerPoints.length > 0) {
+                maxPower = Math.max(...powerPoints);
+              }
+            }
             // ---------------------------------------------
 
             const activityData = {
@@ -177,9 +191,7 @@ export const useFitParser = () => {
               avg_power: session.avg_power
                 ? Math.round(session.avg_power)
                 : null,
-              max_power: session.max_power
-                ? Math.round(session.max_power)
-                : null,
+              max_power: maxPower ? Math.round(maxPower) : null, // On utilise notre variable calculée
 
               laps: formattedLaps,
               streams: streams, // On passe nos beaux tableaux à la place des records bruts !

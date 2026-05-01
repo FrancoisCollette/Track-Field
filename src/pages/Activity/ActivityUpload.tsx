@@ -115,7 +115,12 @@ const ActivityUpload = () => {
         total_descent_m: activityData.elevation_loss_m
           ? Math.round(Math.abs(activityData.elevation_loss_m))
           : 0,
-
+        avg_power: activityData.avg_power
+          ? Math.round(activityData.avg_power)
+          : null,
+        max_power: activityData.max_power
+          ? Math.round(activityData.max_power)
+          : null,
         // Référence stockage R2
         raw_file_url: key,
       });
